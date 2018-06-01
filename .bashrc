@@ -20,6 +20,7 @@ alias pt='pt --ignore tags '
 alias f='find . -iname '
 alias gitb='git branch'
 alias tmux="TERM=screen-256color tmux"
+alias grep="rg"
 
 export TERM=xterm-256color # screen-256color
 # https://unix.stackexchange.com/questions/4859/

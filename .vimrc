@@ -33,6 +33,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 		Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 		Plug 'junegunn/fzf.vim'
 		" Plug 'tpope/vim-dispatch'
+		Plug 'dhruvasagar/vim-zoom'
 
 	" Initialize plugin system
 	call plug#end()
@@ -122,9 +123,34 @@ nnoremap :Q :q
 nnoremap :w:q :wq
 
 """
-" for me
+" Alias
 "
 nnoremap <Leader>qp :set ai <bar> set sw=3 <bar> set expandtab <bar> set tabstop=3 <bar> set softtabstop=3<CR>
+nnoremap <Leader>\ :vertical term<cr>
+nnoremap <Leader>- :term<cr>
+nnoremap <Leader>b :Buffers<cr>
+nnoremap <Leader>F :Files<cr>
+nnoremap <Leader>r :Rg -i <cr>
+" terminal mode
+tnoremap <Leader>\ <C-W>:vertical term<cr>
+tnoremap <Leader>- <C-W>:term<cr>
+tnoremap <Esc> <C-W>N
+
+" Easier split navigations in normal and terminal modes
+nnoremap <Leader><Up> <C-W><C-K>
+nnoremap <Leader><Down> <C-W><C-J>
+nnoremap <Leader><Left> <C-W><C-H>
+nnoremap <Leader><Right> <C-W><C-L>
+tnoremap <Leader><Up> <C-W><C-K>
+tnoremap <Leader><Down> <C-W><C-J>
+tnoremap <Leader><Left> <C-W><C-H>
+tnoremap <Leader><Right> <C-W><C-L>
+
+" zoom
+nnoremap <Leader>Z <C-W>_<bar><C-W>|
+nnoremap <Leader>z <C-W>=
+tnoremap <Leader>Z <C-W>_<C-W>| " not working!!??
+tnoremap <Leader>z <C-W>=
 
 ""
 " ctags
@@ -174,8 +200,8 @@ nnoremap <Leader>33 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> 
 
 " vim tab
 nnoremap <Leader>t :tabedit 
-noremap <Leader><Left>  :tabmove -1<CR>
-noremap <Leader><Right> :tabmove +1<CR>
+" noremap <Leader><Left>  :tabmove -1<CR>
+" noremap <Leader><Right> :tabmove +1<CR>
 " tab ends
 
 " vnoremap <C-c> "*y " When did I do this and why ??
@@ -190,6 +216,8 @@ nnoremap <Leader>fc /<C-R>=expand("<cword>")<CR><CR>
 " Add word under cursor to search pattern
 nnoremap <Leader>ff :let @/.='\\|\<'.expand("<cword>").'\>'<CR>
 " Visible tabs
+set list
+set listchars=tab:>-,trail:~,extends:>,precedes:<
 nnoremap <Leader>qq :set list <bar> set listchars=tab:>-,trail:~,extends:>,precedes:<<CR>
 nnoremap <Leader>qw :set nolist<CR>
 " ,trail:~,extends:>,precedes:<
