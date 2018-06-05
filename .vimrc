@@ -243,8 +243,8 @@ map ∆ :res -5<cr>
 
 set grepprg=rg\ --vimgrep
 
-" https://github.com/junegunn/fzf.vim
-" Global commands
+" FZF Plugin related: https://github.com/junegunn/fzf.vim
+   " FZF Global commands
    " This is the default extra key bindings
    let g:fzf_action = {
      \ 'ctrl-t': 'tab split',
