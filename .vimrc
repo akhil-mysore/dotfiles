@@ -48,7 +48,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    let g:asyncrun_bell = 1 " ring the bell to notify you job finished
 
 "" Arista specific make packages
-   SourceFile "/home/akhil/dotfiles/.vimrc_a4make"
+   SourceFile "/home/akhil/dotfiles/.vimrc_aristamake"
 
 "" http://vimdoc.sourceforge.net/htmldoc/filetype.html
 "" detect file, loads file-plugin and process runtime indentation if present 
