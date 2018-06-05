@@ -17,34 +17,34 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 "
 
 " vim plug section
-	" Specify a directory for plugins
-	" - For Neovim: ~/.local/share/nvim/plugged
-	" - Avoid using standard Vim directory names like 'plugin'
-	call plug#begin('~/.vim/plugged')
+   " Specify a directory for plugins
+   " - For Neovim: ~/.local/share/nvim/plugged
+   " - Avoid using standard Vim directory names like 'plugin'
+   call plug#begin('~/.vim/plugged')
 
-		" Think of sensible.vim as one step above 'nocompatible' mode
-		Plug 'tpope/vim-sensible'
-		" Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
-		Plug 'junegunn/vim-easy-align'
-		" Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
-		Plug 'skywind3000/asyncrun.vim'
-		Plug 'vim-scripts/ZoomWin'
-		" https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2
-		Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-		Plug 'junegunn/fzf.vim'
-		" Plug 'tpope/vim-dispatch'
-		Plug 'dhruvasagar/vim-zoom'
+      " Think of sensible.vim as one step above 'nocompatible' mode
+      Plug 'tpope/vim-sensible'
+      " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
+      Plug 'junegunn/vim-easy-align'
+      " https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2
+      Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+      Plug 'junegunn/fzf.vim'
+      " Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
+      Plug 'skywind3000/asyncrun.vim'
+      " Plug 'vim-scripts/ZoomWin'
+      " Plug 'tpope/vim-dispatch'
+      " Plug 'dhruvasagar/vim-zoom'
 
-	" Initialize plugin system
-	call plug#end()
+   " Initialize plugin system
+   call plug#end()
 
 " Map Leader
-	:let mapleader=" "
+   :let mapleader=" "
 
 "Asyncrun settings
-	let g:asyncrun_auto = "make"
-	let g:asyncrun_open = 8 " set the quickfix window 8 lines height.
-	let g:asyncrun_bell = 1 " ring the bell to notify you job finished
+   let g:asyncrun_auto = "make"
+   let g:asyncrun_open = 8 " set the quickfix window 8 lines height.
+   let g:asyncrun_bell = 1 " ring the bell to notify you job finished
 
 " Arista specific make packages
 SourceFile "/home/akhil/dotfiles/.vimrc_a4make"
@@ -128,9 +128,6 @@ nnoremap :w:q :wq
 nnoremap <Leader>qp :set ai <bar> set sw=3 <bar> set expandtab <bar> set tabstop=3 <bar> set softtabstop=3<CR>
 nnoremap <Leader>\ :vertical term<cr>
 nnoremap <Leader>- :term<cr>
-nnoremap <Leader>b :Buffers<cr>
-nnoremap <Leader>F :Files<cr>
-nnoremap <Leader>r :Rg -i 
 " terminal mode
 tnoremap <Leader>\ <C-W>:vertical term<cr>
 tnoremap <Leader>- <C-W>:term<cr>
@@ -285,66 +282,71 @@ set grepprg=rg\ --vimgrep
    " explicitly bind the keys to down and up in your $FZF_DEFAULT_OPTS.
    let g:fzf_history_dir = '~/.local/share/fzf-history'
 
-	" Command for git grep
-	" - fzf#vim#grep(command, with_column, [options], [fullscreen])
-	command! -bang -nargs=* GGrep
-	  \ call fzf#vim#grep(
-	  \   'git grep --line-number '.shellescape(<q-args>), 0,
-	  \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
+   " Command for git grep
+   " - fzf#vim#grep(command, with_column, [options], [fullscreen])
+   command! -bang -nargs=* GGrep
+     \ call fzf#vim#grep(
+     \   'git grep --line-number '.shellescape(<q-args>), 0,
+     \   { 'dir': systemlist('git rev-parse --show-toplevel')[0] }, <bang>0)
 
-	" Override Colors command. You can safely do this in your .vimrc as fzf.vim
-	" will not override existing commands.
-	command! -bang Colors
-	  \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
+   " Override Colors command. You can safely do this in your .vimrc as fzf.vim
+   " will not override existing commands.
+   command! -bang Colors
+     \ call fzf#vim#colors({'left': '15%', 'options': '--reverse --margin 30%,0'}, <bang>0)
 
-	" Augmenting Ag command using fzf#vim#with_preview function
-	"   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
-	"     * For syntax-highlighting, Ruby and any of the following tools are required:
-	"       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
-	"       - CodeRay: http://coderay.rubychan.de/
-	"       - Rouge: https://github.com/jneen/rouge
-	"
-	"   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
-	"   :Ag! - Start fzf in fullscreen and display the preview window above
-	command! -bang -nargs=* Ag
-	  \ call fzf#vim#ag(<q-args>,
-	  \                 <bang>0 ? fzf#vim#with_preview('up:60%')
-	  \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
-	  \                 <bang>0)
+   " Augmenting Ag command using fzf#vim#with_preview function
+   "   * fzf#vim#with_preview([[options], preview window, [toggle keys...]])
+   "     * For syntax-highlighting, Ruby and any of the following tools are required:
+   "       - Highlight: http://www.andre-simon.de/doku/highlight/en/highlight.php
+   "       - CodeRay: http://coderay.rubychan.de/
+   "       - Rouge: https://github.com/jneen/rouge
+   "
+   "   :Ag  - Start fzf with hidden preview window that can be enabled with "?" key
+   "   :Ag! - Start fzf in fullscreen and display the preview window above
+   command! -bang -nargs=* Ag
+     \ call fzf#vim#ag(<q-args>,
+     \                 <bang>0 ? fzf#vim#with_preview('up:60%')
+     \                         : fzf#vim#with_preview('right:50%:hidden', '?'),
+     \                 <bang>0)
 
 
-	" --column: Show column number
-	" --line-number: Show line number
-	" --no-heading: Do not show file headings in results
-	" --fixed-strings: Search term as a literal string
-	" --ignore-case: Case insensitive search
-	" --no-ignore: Do not respect .gitignore, etc...
-	" --hidden: Search hidden files and folders
-	" --follow: Follow symlinks
-	" --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
-	" --color: Search color options
-	" Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
-	command! -bang -nargs=* Find
-	  \ call fzf#vim#grep(
-	  \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always '.shellescape(<q-args>), 1,
-	  \   <bang>0 ? fzf#vim#with_preview('up:60%')
-	  \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-	  \   <bang>0)
+   " --column: Show column number
+   " --line-number: Show line number
+   " --no-heading: Do not show file headings in results
+   " --fixed-strings: Search term as a literal string
+   " --ignore-case: Case insensitive search
+   " --no-ignore: Do not respect .gitignore, etc...
+   " --hidden: Search hidden files and folders
+   " --follow: Follow symlinks
+   " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
+   " --color: Search color options
+   " Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
+   command! -bang -nargs=* Find
+     \ call fzf#vim#grep(
+     \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always '.shellescape(<q-args>), 1,
+     \   <bang>0 ? fzf#vim#with_preview('up:60%')
+     \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+     \   <bang>0)
 
-	command! -bang -nargs=* Rg
-	\ call fzf#vim#grep(
-	\   'rg --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --color=always '.<q-args>, 1,
-	\   <bang>0 ? fzf#vim#with_preview('up:60%')
-	\           : fzf#vim#with_preview('right:50%:hidden', '?'),
-	\   <bang>0)
+   command! -bang -nargs=* Rg
+   \ call fzf#vim#grep(
+   \   'rg --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --color=always '.<q-args>, 1,
+   \   <bang>0 ? fzf#vim#with_preview('up:60%')
+   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+   \   <bang>0)
 
-	" Likewise, Files command with preview window
-	command! -bang -nargs=? -complete=dir Files
-	  \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+   " Likewise, Files command with preview window
+   command! -bang -nargs=? -complete=dir Files
+     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+   " Alias for fzf
+   nnoremap <silent> <leader><space> :Files<CR>
+   nnoremap <silent> <Leader>b :Buffers<cr>
+   nnoremap <Leader>r :Rg -i 
 
 " easy align
-	" Start interactive EasyAlign in visual mode (e.g. vipga)
-	xmap ga <Plug>(EasyAlign)
+   " Start interactive EasyAlign in visual mode (e.g. vipga)
+   xmap ga <Plug>(EasyAlign)
 
-	" Start interactive EasyAlign for a motion/text object (e.g. gaip)
-	nmap ga <Plug>(EasyAlign)
+   " Start interactive EasyAlign for a motion/text object (e.g. gaip)
+   nmap ga <Plug>(EasyAlign)
