@@ -1,3 +1,4 @@
+
 " If file is readable, source the file
 function! SourceFileFunction( filename )
    if filereadable( a:filename )
@@ -16,7 +17,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 " Put your own customizations below
 "
 
-" vim plug section
+"" vim plug section
    " Specify a directory for plugins
    " - For Neovim: ~/.local/share/nvim/plugged
    " - Avoid using standard Vim directory names like 'plugin'
@@ -38,168 +39,155 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    " Initialize plugin system
    call plug#end()
 
-" Map Leader
+"" Map Leader
    :let mapleader=" "
 
-"Asyncrun settings
+"" Asyncrun plugin settings
    let g:asyncrun_auto = "make"
    let g:asyncrun_open = 8 " set the quickfix window 8 lines height.
    let g:asyncrun_bell = 1 " ring the bell to notify you job finished
 
-" Arista specific make packages
-SourceFile "/home/akhil/dotfiles/.vimrc_a4make"
+"" Arista specific make packages
+   SourceFile "/home/akhil/dotfiles/.vimrc_a4make"
 
-" http://vimdoc.sourceforge.net/htmldoc/filetype.html
-" detect file, loads file-plugin and process runtime indentation if present 
-filetype plugin on
-filetype plugin indent on 
+"" http://vimdoc.sourceforge.net/htmldoc/filetype.html
+"" detect file, loads file-plugin and process runtime indentation if present 
+   filetype plugin on
+   filetype plugin indent on
 
-""Fold
-set foldmethod=indent
-"set foldnestmax=10
-set nofoldenable
-"set foldlevel=2
+"" Fold
+   set foldmethod=indent
+   "set foldnestmax=10
+   set nofoldenable
+   "set foldlevel=2
 
-""
-" Indentation
-"
-set autoindent " ai shortcut
-set cindent cinoptions=(0
-set shiftwidth=3
-set textwidth=85
-"Shows the row,column at the bottom right of status line
-set ruler
-set colorcolumn=+1
-set wrap
-set smarttab softtabstop=3
-set tabstop=3
-set expandtab
-set backspace=indent,eol,start
-set number
-set splitright
+"" Indentation
+   set autoindent " ai shortcut
+   set cindent cinoptions=(0
+   set shiftwidth=3
+   set textwidth=85
+   "Shows the row,column at the bottom right of status line
+   set ruler
+   set colorcolumn=+1
+   set wrap
+   set smarttab softtabstop=3
+   set tabstop=3
+   set expandtab
+   set backspace=indent,eol,start
+   set number
+   set splitright
 
 " Mechanism to switch between tac and tin file
-function! SwitchSourceHeader()
-   let ext = expand("%:e")
-   if (ext == "tac")
-      find %:t:r.tin
-   elseif (ext == "tin")
-      find %:t:r.tac
-   endif
-endfunction
+   function! SwitchSourceHeader()
+      let ext = expand("%:e")
+      if (ext == "tac")
+         find %:t:r.tin
+      elseif (ext == "tin")
+         find %:t:r.tac
+      endif
+   endfunction
 
-function! VerticalOpenSourceHeader()
-   let ext = expand("%:e")
-   if (ext == "tac")
-      vs %:t:r.tin
-   elseif (ext == "tin")
-     vs %:t:r.tac
-   endif
-endfunction
+   function! VerticalOpenSourceHeader()
+      let ext = expand("%:e")
+      if (ext == "tac")
+         vs %:t:r.tin
+      elseif (ext == "tin")
+        vs %:t:r.tac
+      endif
+   endfunction
 
-nmap gr :tabprevious<CR>
-nmap <Leader>s :call SwitchSourceHeader()<CR>
-nmap <Leader>ss :call VerticalOpenSourceHeader()<CR>
+   nmap <Leader>s :call SwitchSourceHeader()<CR>
+   nmap <Leader>ss :call VerticalOpenSourceHeader()<CR>
 
-""
-" cscope
-"
-" nmap <C-/>] :cs find c <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>ce :cs find e <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>cf :cs find f <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>cg :cs find g <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>ci :cs find i <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>cs :cs find s <C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>ct :cs find t <C-R>=expand("<cword>")<CR><CR>
+"" cscope
+   " nmap <C-/>] :cs find c <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>ce :cs find e <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>cf :cs find f <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>cg :cs find g <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>ci :cs find i <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>cs :cs find s <C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>ct :cs find t <C-R>=expand("<cword>")<CR><CR>
 
-""
-" Typos
-"
-nnoremap :Cs :cs
-nnoremap :W :w
-nnoremap :Q :q
-nnoremap :w:q :wq
+"" Typos
+   nnoremap :Cs :cs
+   nnoremap :W :w
+   nnoremap :Q :q
+   nnoremap :w:q :wq
 
-"""
-" Alias
-"
-nnoremap <Leader>qp :set ai <bar> set sw=3 <bar> set expandtab <bar> set tabstop=3 <bar> set softtabstop=3<CR>
-nnoremap <Leader>\ :vertical term<cr>
-nnoremap <Leader>- :term<cr>
-" terminal mode
-tnoremap <Leader>\ <C-W>:vertical term<cr>
-tnoremap <Leader>- <C-W>:term<cr>
-tnoremap <Esc> <C-W>N
+"" Alias
+   nmap gr :tabprevious<CR>
+   nnoremap <Leader>qp :set ai <bar> set sw=3 <bar> set expandtab <bar> set tabstop=3 <bar> set softtabstop=3<CR>
+   nnoremap <Leader>\ :vertical term<cr>
+   nnoremap <Leader>- :term<cr>
+   " terminal mode
+   tnoremap <Leader>\ <C-W>:vertical term<cr>
+   tnoremap <Leader>- <C-W>:term<cr>
+   tnoremap <Esc> <C-W>N
+   " vim tab
+   nnoremap <Leader>t :tabedit
+   " noremap <Leader><Left>  :tabmove -1<CR>
+   " noremap <Leader><Right> :tabmove +1<CR>
+   " tab ends
 
 " Easier split navigations in normal and terminal modes
-nnoremap <Leader><Up> <C-W><C-K>
-nnoremap <Leader><Down> <C-W><C-J>
-nnoremap <Leader><Left> <C-W><C-H>
-nnoremap <Leader><Right> <C-W><C-L>
-tnoremap <Leader><Up> <C-W><C-K>
-tnoremap <Leader><Down> <C-W><C-J>
-tnoremap <Leader><Left> <C-W><C-H>
-tnoremap <Leader><Right> <C-W><C-L>
+   nnoremap <Leader><Up> <C-W><C-K>
+   nnoremap <Leader><Down> <C-W><C-J>
+   nnoremap <Leader><Left> <C-W><C-H>
+   nnoremap <Leader><Right> <C-W><C-L>
+   tnoremap <Leader><Up> <C-W><C-K>
+   tnoremap <Leader><Down> <C-W><C-J>
+   tnoremap <Leader><Left> <C-W><C-H>
+   tnoremap <Leader><Right> <C-W><C-L>
 
 " zoom
-nnoremap <Leader>Z <C-W>_<bar><C-W>|
-nnoremap <Leader>z <C-W>=
-tnoremap <Leader>Z <C-W>_<C-W>| " not working!!??
-tnoremap <Leader>z <C-W>=
+   nnoremap <Leader>Z <C-W>_<bar><C-W>|
+   nnoremap <Leader>z <C-W>=
+   tnoremap <Leader>Z <C-W>_<C-W>| " not working!!??
+   tnoremap <Leader>z <C-W>=
 
-""
-" ctags
-"
-"
-"set nocscopetag
-"set tags=tags;/
-"map <C-;> :tab split<CR>:exec("tag ".expand(""))<CR>
-"map <C-\> :vsp <CR>:exec("tag ".expand(""))<CR>
+"" ctags
+   "set nocscopetag
+   "set tags=tags;/
+   "map <C-;> :tab split<CR>:exec("tag ".expand(""))<CR>
+   "map <C-\> :vsp <CR>:exec("tag ".expand(""))<CR>
 
-""
-" General
-"
-set scrolloff=5 " Working line 'scrolloff' lines above or below
-set showmode " show in which vim mode are you in
-set showcmd " not working
+"" General
+   set scrolloff=5 " Working line 'scrolloff' lines above or below
+   set showmode " show in which vim mode are you in
+   set showcmd " not working
 
-set statusline=%F         " Path to the file
-set statusline+=%r
-set statusline+=%=        " Switch to the right side
-set statusline+=%l        " Current line
-set statusline+=/         " Separator
-set statusline+=%L        " Total lines
-set laststatus=2
+   set statusline=%F         " Path to the file
+   set statusline+=%r
+   set statusline+=%=        " Switch to the right side
+   set statusline+=%l        " Current line
+   set statusline+=/         " Separator
+   set statusline+=%L        " Total lines
+   set laststatus=2
 
-set showmatch " bracket match, help for details
-set more " by default it is on.
-set incsearch " highlight as you search
-set hlsearch " highlight search patterns
-set ignorecase
-set smartcase " ignorecase and smartcase must be present for smartcase to work
+   set showmatch " bracket match, help for details
+   set more " by default it is on.
+   set incsearch " highlight as you search
+   set hlsearch " highlight search patterns
+   set ignorecase
+   set smartcase " ignorecase and smartcase must be present for smartcase to work
 
-set is " ????
-set visualbell " Dont make sound
-set pastetoggle=<F2>
-" what ? below line ?
-nnoremap <C-p>[ :AGid -d <C-R>=expand("<cword>")<CR><CR>
+   set is " ????
+   set visualbell " Dont make sound
+   set pastetoggle=<F2>
+   " what ? below line ?
+   nnoremap <C-p>[ :AGid -d <C-R>=expand("<cword>")<CR><CR>
 
-syntax enable
-set clipboard=unnamed
-set paste
+   syntax enable
+   set clipboard=unnamed
+   set paste
 
-" set tabstop
-nnoremap <Leader>8 :set sw=8 <bar> set tabstop=8 <bar> set softtabstop=8 <bar> set ai <bar> set textwidth=110<CR>
-nnoremap <Leader>3 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85<CR>
-nnoremap <Leader>33 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85 <bar> set expandtab<CR>
+" set tabstop alias
+   nnoremap <Leader>8 :set sw=8 <bar> set tabstop=8 <bar> set softtabstop=8 <bar> set ai <bar> set textwidth=110<CR>
+   nnoremap <Leader>3 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85<CR>
+   nnoremap <Leader>33 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85 <bar> set expandtab<CR>
 
-" vim tab
-nnoremap <Leader>t :tabedit 
-" noremap <Leader><Left>  :tabmove -1<CR>
-" noremap <Leader><Right> :tabmove +1<CR>
-" tab ends
 
 " vnoremap <C-c> "*y " When did I do this and why ??
 "Delete all searched occurances in this file
