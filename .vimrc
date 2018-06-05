@@ -130,7 +130,7 @@ nnoremap <Leader>\ :vertical term<cr>
 nnoremap <Leader>- :term<cr>
 nnoremap <Leader>b :Buffers<cr>
 nnoremap <Leader>F :Files<cr>
-nnoremap <Leader>r :Rg -i <cr>
+nnoremap <Leader>r :Rg -i 
 " terminal mode
 tnoremap <Leader>\ <C-W>:vertical term<cr>
 tnoremap <Leader>- <C-W>:term<cr>
@@ -333,7 +333,7 @@ set grepprg=rg\ --vimgrep
 
 	command! -bang -nargs=* Rg
 	\ call fzf#vim#grep(
-	\   'rg --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --color=always '.<q-args>, 1,
+	\   'rg --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --color=always '.<q-args>, 1,
 	\   <bang>0 ? fzf#vim#with_preview('up:60%')
 	\           : fzf#vim#with_preview('right:50%:hidden', '?'),
 	\   <bang>0)
