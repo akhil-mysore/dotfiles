@@ -32,6 +32,10 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
       Plug 'junegunn/fzf.vim'
       " Plug 'SirVer/ultisnips' | Plug 'honza/vim-snippets'
       Plug 'skywind3000/asyncrun.vim'
+      " Create text objects without pain
+      Plug 'kana/vim-textobj-user'
+      Plug 'bps/vim-textobj-python'
+      Plug 'kana/vim-textobj-diff'
       " Plug 'vim-scripts/ZoomWin'
       " Plug 'tpope/vim-dispatch'
       " Plug 'dhruvasagar/vim-zoom'
@@ -47,8 +51,13 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    let g:asyncrun_open = 8 " set the quickfix window 8 lines height.
    let g:asyncrun_bell = 1 " ring the bell to notify you job finished
 
-"" Arista specific make packages
+"" Arista specific
+   " make packages
    SourceFile "/home/akhil/dotfiles/.vimrc_aristamake"
+   " switch between files
+   SourceFile "/home/akhil/dotfiles/.vimrc_arista_switchfiles"
+   nmap <Leader>s :call SwitchSourceHeader()<CR>
+   nmap <Leader>ss :call VerticalOpenSourceHeader()<CR>
 
 "" http://vimdoc.sourceforge.net/htmldoc/filetype.html
 "" detect file, loads file-plugin and process runtime indentation if present 
@@ -76,28 +85,6 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set backspace=indent,eol,start
    set number
    set splitright
-
-" Mechanism to switch between tac and tin file
-   function! SwitchSourceHeader()
-      let ext = expand("%:e")
-      if (ext == "tac")
-         find %:t:r.tin
-      elseif (ext == "tin")
-         find %:t:r.tac
-      endif
-   endfunction
-
-   function! VerticalOpenSourceHeader()
-      let ext = expand("%:e")
-      if (ext == "tac")
-         vs %:t:r.tin
-      elseif (ext == "tin")
-        vs %:t:r.tac
-      endif
-   endfunction
-
-   nmap <Leader>s :call SwitchSourceHeader()<CR>
-   nmap <Leader>ss :call VerticalOpenSourceHeader()<CR>
 
 "" cscope
    " nmap <C-/>] :cs find c <C-R>=expand("<cword>")<CR><CR>
