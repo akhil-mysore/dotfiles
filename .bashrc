@@ -9,7 +9,7 @@ if [ -f /home/akhil/dotfiles/.bashrc.arista ]; then
 fi
 
 # User specific aliases and functions # Akhil
-alias vi="VIMRUNTIME=~/mlocal/share/vim/vim81 ~/mlocal/bin/vim"
+# alias vi="VIMRUNTIME=~/mlocal/share/vim/vim81 ~/mlocal/bin/vim"
 alias l='ls -F'
 alias ll='ls -ltrF'
 alias la='ls -altrF'

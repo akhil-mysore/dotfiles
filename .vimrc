@@ -111,7 +111,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    " terminal mode
    tnoremap <Leader>\ <C-W>:vertical term<cr>
    tnoremap <Leader>- <C-W>:term<cr>
-   tnoremap <Esc> <C-W>N
+   tnoremap <Leader><Esc> <C-W>N
    " vim tab
    nnoremap <Leader>t :tabedit
    " noremap <Leader><Left>  :tabmove -1<CR>
