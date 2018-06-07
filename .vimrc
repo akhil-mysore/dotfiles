@@ -87,14 +87,25 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set number
    set splitright
 
+" FileType specific things
    function! SetPythonOptions()
       setlocal nocscopeverbose " temporarily disable cscope warning
       cs add /src/pycscope.out /src
-      cs reset
+      cs reset " if it is already added, reset
       setlocal cscopeverbose
       setlocal cscopetag " always search cscope database first and then tag files
    endfunction
    autocmd FileType python call SetPythonOptions()
+
+   function! SetTacCppOptions()
+      setlocal nocscopeverbose " temporarily disable cscope warning
+      cs add /src/cscope.out /src
+      cs reset " if it is already added, reset
+      setlocal cscopeverbose
+      setlocal cscopetag " always search cscope database first and then tag files
+   endfunction
+   autocmd FileType tac call SetTacCppOptions()
+   autocmd FileType cpp call SetTacCppOptions()
 
 "" cscope
    " nmap <C-/>] :cs find c <C-R>=expand("<cword>")<CR><CR>
@@ -113,7 +124,15 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    nnoremap :Q :q
    nnoremap :w:q :wq
 
-"" Alias
+"" Key Maps
+   function! SeeSpaceTabs()
+      set list
+      set listchars=tab:>-,trail:~,extends:>,precedes:<
+      " echom "SeeSpaceTabs"
+   endfunction
+   nnoremap <Leader>qq :call SeeSpaceTabs()<cr>
+   nnoremap <Leader>qw :set nolist<CR>
+
    nmap gr :tabprevious<CR>
    nnoremap <Leader>qp :set ai <bar> set sw=3 <bar> set expandtab <bar> set tabstop=3 <bar> set softtabstop=3<CR>
    nnoremap <Leader>\ :vertical term<cr>
@@ -123,7 +142,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    tnoremap <Leader>- <C-W>:term<cr>
    tnoremap <Leader><Esc> <C-W>N
    " vim tab
-   nnoremap <Leader>t :tabedit
+   nnoremap <Leader>t :tabedit 
    " noremap <Leader><Left>  :tabmove -1<CR>
    " noremap <Leader><Right> :tabmove +1<CR>
    " set tabstop alias
@@ -131,7 +150,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    nnoremap <Leader>3 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85<CR>
    nnoremap <Leader>33 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85 <bar> set expandtab<CR>
 
-" Easier split navigations in normal and terminal modes
+   " Easier split navigations in normal and terminal modes
    nnoremap <Leader><Up> <C-W><C-K>
    nnoremap <Leader><Down> <C-W><C-J>
    nnoremap <Leader><Left> <C-W><C-H>
@@ -141,11 +160,32 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    tnoremap <Leader><Left> <C-W><C-H>
    tnoremap <Leader><Right> <C-W><C-L>
 
-" zoom
+   " zoom
    nnoremap <Leader>Z <C-W>_<bar><C-W>|
    nnoremap <Leader>z <C-W>=
    tnoremap <Leader>Z <C-W>_<C-W>| " not working!!??
    tnoremap <Leader>z <C-W>=
+   " Bind <leader>y to forward last-yanked text to Clipper
+   nnoremap <leader>Y :call system('nc localhost 8377', @0)<CR>
+
+   " goto beginning/end of scope
+   map [[ ][%0
+   map ]] ][][%0
+
+   map ˚ :res +5<cr>
+   map ∆ :res -5<cr>
+   " vnoremap <C-c> "*y " When did I do this and why ??
+   "Delete all searched occurances in this file
+   nnoremap <Leader>dd :%s/<cr>//gn 
+   " Count number of matches
+   nnoremap \n :%s///gn<CR>
+
+   nnoremap <Leader>f /\c<C-R>=expand("<cword>")<CR><CR>
+   nnoremap <Leader>fc /<C-R>=expand("<cword>")<CR><CR>
+   " Add word under cursor to search pattern
+   nnoremap <Leader>ff :let @/.='\\|\<'.expand("<cword>").'\>'<CR>
+
+let g:python_recommended_style = 0
 
 "" ctags
    "set nocscopetag
@@ -154,6 +194,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    "map <C-\> :vsp <CR>:exec("tag ".expand(""))<CR>
 
 "" General
+   call SeeSpaceTabs()
    set scrolloff=5 " Working line 'scrolloff' lines above or below
    set showmode " show in which vim mode are you in
    set showcmd " not working
@@ -183,24 +224,6 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set clipboard=unnamed
 
 
-" vnoremap <C-c> "*y " When did I do this and why ??
-"Delete all searched occurances in this file
-nnoremap <Leader>dd :%s/<cr>//gn 
-" Count number of matches
-nnoremap \n :%s///gn<CR> 
-
-nnoremap <Leader>f /\c<C-R>=expand("<cword>")<CR><CR>
-nnoremap <Leader>fc /<C-R>=expand("<cword>")<CR><CR>
-"<C-R>:=expand("<cword>")<CR><CR>
-" Add word under cursor to search pattern
-nnoremap <Leader>ff :let @/.='\\|\<'.expand("<cword>").'\>'<CR>
-" Visible tabs
-set list
-set listchars=tab:>-,trail:~,extends:>,precedes:<
-nnoremap <Leader>qq :set list <bar> set listchars=tab:>-,trail:~,extends:>,precedes:<<CR>
-nnoremap <Leader>qw :set nolist<CR>
-" ,trail:~,extends:>,precedes:<
-
 " autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window %")
 
 if exists("$TMUX")
@@ -213,17 +236,11 @@ if exists("$TMUX")
   endif
 endif
 
-" Bind <leader>y to forward last-yanked text to Clipper
-nnoremap <leader>Y :call system('nc localhost 8377', @0)<CR>
-
-map [[ ][%0
-map ]] ][][%0
-
-let g:python_recommended_style = 0
-map ˚ :res +5<cr>
-map ∆ :res -5<cr>
-
 set grepprg=rg\ --vimgrep
+
+"------------------------------
+" Plugin related configurations
+"------------------------------
 
 " FZF Plugin related: https://github.com/junegunn/fzf.vim
    " FZF Global commands
