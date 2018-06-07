@@ -71,10 +71,11 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    "set foldlevel=2
 
 "" Indentation
-   set autoindent " ai shortcut
+   set autoindent
    set cindent cinoptions=(0
-   set shiftwidth=3
+   set shiftwidth=3 " affects what happens when you press >>, << or ==
    set textwidth=85
+   set paste
    "Shows the row,column at the bottom right of status line
    set ruler
    set colorcolumn=+1
@@ -85,6 +86,15 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set backspace=indent,eol,start
    set number
    set splitright
+
+   function! SetPythonOptions()
+      setlocal nocscopeverbose " temporarily disable cscope warning
+      cs add /src/pycscope.out /src
+      cs reset
+      setlocal cscopeverbose
+      setlocal cscopetag " always search cscope database first and then tag files
+   endfunction
+   autocmd FileType python call SetPythonOptions()
 
 "" cscope
    " nmap <C-/>] :cs find c <C-R>=expand("<cword>")<CR><CR>
@@ -116,7 +126,10 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    nnoremap <Leader>t :tabedit
    " noremap <Leader><Left>  :tabmove -1<CR>
    " noremap <Leader><Right> :tabmove +1<CR>
-   " tab ends
+   " set tabstop alias
+   nnoremap <Leader>8 :set sw=8 <bar> set tabstop=8 <bar> set softtabstop=8 <bar> set ai <bar> set textwidth=110<CR>
+   nnoremap <Leader>3 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85<CR>
+   nnoremap <Leader>33 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85 <bar> set expandtab<CR>
 
 " Easier split navigations in normal and terminal modes
    nnoremap <Leader><Up> <C-W><C-K>
@@ -146,7 +159,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set showcmd " not working
 
    set statusline=%F         " Path to the file
-   set statusline+=%r
+   set statusline+=%r        " File name
    set statusline+=%=        " Switch to the right side
    set statusline+=%l        " Current line
    set statusline+=/         " Separator
@@ -156,7 +169,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set showmatch " bracket match, help for details
    set more " by default it is on.
    set incsearch " highlight as you search
-   set hlsearch " highlight search patterns
+   set hlsearch " highlight all search patterns
    set ignorecase
    set smartcase " ignorecase and smartcase must be present for smartcase to work
 
@@ -168,12 +181,6 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 
    syntax enable
    set clipboard=unnamed
-   set paste
-
-" set tabstop alias
-   nnoremap <Leader>8 :set sw=8 <bar> set tabstop=8 <bar> set softtabstop=8 <bar> set ai <bar> set textwidth=110<CR>
-   nnoremap <Leader>3 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85<CR>
-   nnoremap <Leader>33 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85 <bar> set expandtab<CR>
 
 
 " vnoremap <C-c> "*y " When did I do this and why ??
