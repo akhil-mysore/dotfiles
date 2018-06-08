@@ -25,6 +25,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 
       " Think of sensible.vim as one step above 'nocompatible' mode
       Plug 'tpope/vim-sensible'
+      " Plug 'python-mode/python-mode'
       " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
       Plug 'junegunn/vim-easy-align'
       " https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2
@@ -44,7 +45,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    call plug#end()
 
 "" Map Leader
-   :let mapleader=" "
+   :let mapleader=";"
 
 "" Asyncrun plugin settings
    let g:asyncrun_auto = "make"
@@ -237,6 +238,22 @@ if exists("$TMUX")
 endif
 
 set grepprg=rg\ --vimgrep
+
+" in place search
+function! s:inplace_search_start()
+    let b:orig_cursor_pos = getpos('.')
+    cnoremap <buffer> <CR> <CR>:call <SID>inplace_search_stop()<CR>
+endfunction
+
+function! s:inplace_search_stop()
+    cunmap <buffer> <CR>
+    if line('.') != b:orig_cursor_pos[1]
+        call setpos('.', b:orig_cursor_pos)
+    endif
+endfunction
+" TODO Learn what is SID ?
+map g/ :call <SID>inplace_search_start()<CR>/
+map g? :call <SID>inplace_search_start()<CR>?
 
 "------------------------------
 " Plugin related configurations
