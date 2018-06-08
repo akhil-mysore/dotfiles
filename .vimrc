@@ -337,18 +337,12 @@ map g? :call <SID>inplace_search_start()<CR>?
    " --glob: Additional conditions for search (in this case ignore everything in the .git/ folder)
    " --color: Search color options
    " Similarly, we can apply it to fzf#vim#grep. To use ripgrep instead of ag:
-   command! -bang -nargs=* Find
-     \ call fzf#vim#grep(
-     \   'rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --color=always '.shellescape(<q-args>), 1,
-     \   <bang>0 ? fzf#vim#with_preview('up:60%')
-     \           : fzf#vim#with_preview('right:50%:hidden', '?'),
-     \   <bang>0)
 
    command! -bang -nargs=* Rg
    \ call fzf#vim#grep(
    \   'rg --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --color=always '.<q-args>, 1,
    \   <bang>0 ? fzf#vim#with_preview('up:60%')
-   \           : fzf#vim#with_preview('right:50%:hidden', '?'),
+   \           : fzf#vim#with_preview('right:50%'),
    \   <bang>0)
 
    " Likewise, Files command with preview window
