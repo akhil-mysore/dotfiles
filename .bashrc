@@ -10,6 +10,10 @@ fi
 
 # User specific aliases and functions # Akhil
 # alias vi="VIMRUNTIME=~/mlocal/share/vim/vim81 ~/mlocal/bin/vim"
+#if [[ -n "${WP}" ]]; then
+#   alias vi="VIMRUNTIME=~/mlocal/share/vim/vim81 ~/mlocal/bin/vim"
+#fi
+alias v="VIMRUNTIME=~/mlocal/share/vim/vim81 ~/mlocal/bin/vim"
 alias l='ls -F'
 alias ll='ls -ltrF'
 alias la='ls -altrF'
@@ -20,7 +24,7 @@ alias pt='pt --ignore tags '
 alias f='find . -iname '
 alias gitb='git branch'
 alias tmux="TERM=screen-256color tmux"
-alias grep="rg"
+alias gr="rg"
 
 export TERM=xterm-256color # screen-256color
 # https://unix.stackexchange.com/questions/4859/
