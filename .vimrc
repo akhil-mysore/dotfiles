@@ -1,5 +1,3 @@
-
-" If file is readable, source the file
 function! SourceFileFunction( filename )
    if filereadable( a:filename )
       execute "source ".a:filename
@@ -25,7 +23,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 
       " Think of sensible.vim as one step above 'nocompatible' mode
       Plug 'tpope/vim-sensible'
-      " Plug 'python-mode/python-mode'
+      " Plug 'python-mode/python-mode', { 'branch': 'develop' }
       " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
       Plug 'junegunn/vim-easy-align'
       " https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2
@@ -37,6 +35,8 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
       Plug 'kana/vim-textobj-user'
       Plug 'bps/vim-textobj-python'
       Plug 'kana/vim-textobj-diff'
+      Plug 'tpope/vim-fugitive'
+      Plug 'majutsushi/tagbar'
       " Plug 'vim-scripts/ZoomWin'
       " Plug 'tpope/vim-dispatch'
       " Plug 'dhruvasagar/vim-zoom'
@@ -45,7 +45,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    call plug#end()
 
 "" Map Leader
-   :let mapleader=";"
+   :let mapleader=" "
 
 "" Asyncrun plugin settings
    let g:asyncrun_auto = "make"
@@ -81,34 +81,22 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set ruler
    set colorcolumn=+1
    set wrap
-   set smarttab softtabstop=3
-   set tabstop=3
+   "set smarttab softtabstop=3
+   "set tabstop=3
    set expandtab
    set backspace=indent,eol,start
    set number
    set splitright
 
-" FileType specific things
-   function! SetPythonOptions()
+"" cscope
+   if filereadable( a:filename )
       setlocal nocscopeverbose " temporarily disable cscope warning
       cs add /src/pycscope.out /src
-      cs reset " if it is already added, reset
-      setlocal cscopeverbose
-      setlocal cscopetag " always search cscope database first and then tag files
-   endfunction
-   autocmd FileType python call SetPythonOptions()
-
-   function! SetTacCppOptions()
-      setlocal nocscopeverbose " temporarily disable cscope warning
       cs add /src/cscope.out /src
       cs reset " if it is already added, reset
       setlocal cscopeverbose
       setlocal cscopetag " always search cscope database first and then tag files
-   endfunction
-   autocmd FileType tac call SetTacCppOptions()
-   autocmd FileType cpp call SetTacCppOptions()
-
-"" cscope
+   endif
    " nmap <C-/>] :cs find c <C-R>=expand("<cword>")<CR><CR>
    nnoremap <Leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
    nnoremap <Leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
@@ -124,6 +112,8 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    nnoremap :W :w
    nnoremap :Q :q
    nnoremap :w:q :wq
+   " nnoremap m<Leader> <Leader>
+   " tnoremap m<Leader> <Leader>
 
 "" Key Maps
    function! SeeSpaceTabs()
@@ -139,9 +129,10 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    nnoremap <Leader>\ :vertical term<cr>
    nnoremap <Leader>- :term<cr>
    " terminal mode
-   tnoremap <Leader>\ <C-W>:vertical term<cr>
-   tnoremap <Leader>- <C-W>:term<cr>
-   tnoremap <Leader><Esc> <C-W>N
+   tnoremap <Leader>,\ <C-W>:vertical term<cr>
+   tnoremap <Leader>,- <C-W>:term<cr>
+   tnoremap <Leader><Leader> <C-W>N
+   "tnoremap <silent> <Leader>b :Buffers<cr>
    " vim tab
    nnoremap <Leader>t :tabedit 
    " noremap <Leader><Left>  :tabmove -1<CR>
@@ -156,10 +147,19 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    nnoremap <Leader><Down> <C-W><C-J>
    nnoremap <Leader><Left> <C-W><C-H>
    nnoremap <Leader><Right> <C-W><C-L>
+   nnoremap <Leader>k <C-W><C-K>
+   nnoremap <Leader>j <C-W><C-J>
+   nnoremap <Leader>h <C-W><C-H>
+   nnoremap <Leader>l <C-W><C-L>
    tnoremap <Leader><Up> <C-W><C-K>
    tnoremap <Leader><Down> <C-W><C-J>
    tnoremap <Leader><Left> <C-W><C-H>
    tnoremap <Leader><Right> <C-W><C-L>
+   tnoremap <Leader>k <C-W><C-K>
+   tnoremap <Leader>j <C-W><C-J>
+   tnoremap <Leader>h <C-W><C-H>
+   tnoremap <Leader>l <C-W><C-L>
+   tnoremap <Leader>p <C-W>".
 
    " zoom
    nnoremap <Leader>Z <C-W>_<bar><C-W>|
@@ -186,7 +186,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    " Add word under cursor to search pattern
    nnoremap <Leader>ff :let @/.='\\|\<'.expand("<cword>").'\>'<CR>
 
-let g:python_recommended_style = 0
+" let g:python_recommended_style = 0
 
 "" ctags
    "set nocscopetag
@@ -348,9 +348,12 @@ map g? :call <SID>inplace_search_start()<CR>?
    " Likewise, Files command with preview window
    command! -bang -nargs=? -complete=dir Files
      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+   command! -bang -nargs=? -complete=dir FileCWord
+     \ call fzf#vim#files(expand('<cword>'), fzf#vim#with_preview(), <bang>0)
 
    " Alias for fzf
    nnoremap <silent> <leader><space> :Files<CR>
+   nnoremap <silent> <leader><space>f :FileCWord
    nnoremap <silent> <Leader>b :Buffers<cr>
    nnoremap <Leader>r :Rg -i 
 
@@ -360,3 +363,13 @@ map g? :call <SID>inplace_search_start()<CR>?
 
    " Start interactive EasyAlign for a motion/text object (e.g. gaip)
    nmap ga <Plug>(EasyAlign)
+
+" Plugin python-mode
+   let g:pymode_python = 'python'
+   let g:pymode_trim_whitespaces = 0
+
+   " Alias for pymode
+   let g:pymode_run_bind = '<Leader>R'
+
+" Plugin Tagbar
+   nnoremap <F8> :TagbarToggle<CR>
