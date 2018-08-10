@@ -25,6 +25,7 @@ alias f='find . -iname '
 alias gitb='git branch'
 alias tmux="TERM=screen-256color tmux"
 alias gr="rg"
+alias gl='git log'
 
 export TERM=xterm-256color # screen-256color
 # https://unix.stackexchange.com/questions/4859/

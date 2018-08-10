@@ -23,7 +23,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 
       " Think of sensible.vim as one step above 'nocompatible' mode
       Plug 'tpope/vim-sensible'
-      " Plug 'python-mode/python-mode', { 'branch': 'develop' }
+      Plug 'python-mode/python-mode', { 'branch': 'develop' }
       " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
       Plug 'junegunn/vim-easy-align'
       " https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2
@@ -89,14 +89,14 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    set splitright
 
 "" cscope
-   if filereadable( a:filename )
+   "if filereadable( a:filename )
       setlocal nocscopeverbose " temporarily disable cscope warning
       cs add /src/pycscope.out /src
       cs add /src/cscope.out /src
       cs reset " if it is already added, reset
       setlocal cscopeverbose
       setlocal cscopetag " always search cscope database first and then tag files
-   endif
+   "endif
    " nmap <C-/>] :cs find c <C-R>=expand("<cword>")<CR><CR>
    nnoremap <Leader>cc :cs find c <C-R>=expand("<cword>")<CR><CR>
    nnoremap <Leader>cd :cs find d <C-R>=expand("<cword>")<CR><CR>
@@ -340,7 +340,7 @@ map g? :call <SID>inplace_search_start()<CR>?
 
    command! -bang -nargs=* Rg
    \ call fzf#vim#grep(
-   \   'rg --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --color=always '.<q-args>, 1,
+   \   'rg --smart-case --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --glob "!taccscope*" --color=always '.<q-args>, 1,
    \   <bang>0 ? fzf#vim#with_preview('up:60%')
    \           : fzf#vim#with_preview('right:50%'),
    \   <bang>0)
@@ -352,10 +352,11 @@ map g? :call <SID>inplace_search_start()<CR>?
      \ call fzf#vim#files(expand('<cword>'), fzf#vim#with_preview(), <bang>0)
 
    " Alias for fzf
-   nnoremap <silent> <leader><space> :Files<CR>
+   nnoremap <silent> <leader><space> :Files /src<CR>
+   "nnoremap <silent> <Leader><space> :Files <C-R>=expand('%:h')<CR><CR>
    nnoremap <silent> <leader><space>f :FileCWord
    nnoremap <silent> <Leader>b :Buffers<cr>
-   nnoremap <Leader>r :Rg -i 
+   nnoremap <Leader>r :Rg 
 
 " easy align
    " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -367,9 +368,10 @@ map g? :call <SID>inplace_search_start()<CR>?
 " Plugin python-mode
    let g:pymode_python = 'python'
    let g:pymode_trim_whitespaces = 0
+   let g:pymode_run_bind = '<leader>x'
+   let g:pymode_breakpoint_bind = '<leader>k'
 
    " Alias for pymode
-   let g:pymode_run_bind = '<Leader>R'
 
 " Plugin Tagbar
    nnoremap <F8> :TagbarToggle<CR>
