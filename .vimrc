@@ -23,7 +23,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 
       " Think of sensible.vim as one step above 'nocompatible' mode
       Plug 'tpope/vim-sensible'
-      Plug 'python-mode/python-mode', { 'branch': 'develop' }
+      " Plug 'python-mode/python-mode', { 'branch': 'develop' }
       " Shorthand notation; fetches https://github.com/junegunn/vim-easy-align
       Plug 'junegunn/vim-easy-align'
       " https://medium.com/@crashybang/supercharge-vim-with-fzf-and-ripgrep-d4661fc853d2
@@ -37,6 +37,8 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
       Plug 'kana/vim-textobj-diff'
       Plug 'tpope/vim-fugitive'
       Plug 'majutsushi/tagbar'
+      Plug 'xolox/vim-session'
+      Plug 'xolox/vim-misc'
       " Plug 'vim-scripts/ZoomWin'
       " Plug 'tpope/vim-dispatch'
       " Plug 'dhruvasagar/vim-zoom'
@@ -59,6 +61,8 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    SourceFile "/home/akhil/dotfiles/.vimrc_arista_switchfiles"
    nmap <Leader>s :call SwitchSourceHeader()<CR>
    nmap <Leader>ss :call VerticalOpenSourceHeader()<CR>
+   " Checkout file from perforce
+   SourceFile "/home/akhil/dotfiles/.vimrc_arista_checkout"
 
 "" http://vimdoc.sourceforge.net/htmldoc/filetype.html
 "" detect file, loads file-plugin and process runtime indentation if present 
@@ -91,7 +95,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 "" cscope
    "if filereadable( a:filename )
       setlocal nocscopeverbose " temporarily disable cscope warning
-      cs add /src/pycscope.out /src
+      "cs add /src/pycscope.out /src
       cs add /src/cscope.out /src
       cs reset " if it is already added, reset
       setlocal cscopeverbose
@@ -263,6 +267,7 @@ map g? :call <SID>inplace_search_start()<CR>?
    " FZF Global commands
    " This is the default extra key bindings
    let g:fzf_action = {
+     \ 'ctrl-q': 'wall | bdelete',
      \ 'ctrl-t': 'tab split',
      \ 'ctrl-x': 'split',
      \ 'ctrl-v': 'vsplit' }
@@ -366,12 +371,21 @@ map g? :call <SID>inplace_search_start()<CR>?
    nmap ga <Plug>(EasyAlign)
 
 " Plugin python-mode
-   let g:pymode_python = 'python'
-   let g:pymode_trim_whitespaces = 0
-   let g:pymode_run_bind = '<leader>x'
-   let g:pymode_breakpoint_bind = '<leader>k'
+   "let g:pymode_python = 'python'
+   "let g:pymode_trim_whitespaces = 0
+   "let g:pymode_run_bind = '<leader>x'
+   "let g:pymode_breakpoint_bind = '<leader>k'
 
    " Alias for pymode
 
 " Plugin Tagbar
    nnoremap <F8> :TagbarToggle<CR>
+
+" Plugin vim-sessions
+   " Donot autosave as my saved session needs to be named.
+   " TODO: find out how to name autosaved sessions based
+   "       on environment variables
+   :let g:session_autosave = 'no' 
+   nnoremap :wq :SaveSession Sess$HOSTNAME.vim <bar> wq<CR>
+   nnoremap :q :SaveSession Sess$HOSTNAME.vim <bar> q<CR>
+
