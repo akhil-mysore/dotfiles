@@ -356,12 +356,12 @@ map g? :call <SID>inplace_search_start()<CR>?
    command! -bang -nargs=? -complete=dir Files
      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
    command! -bang -nargs=? -complete=dir FileCWord
-     \ call fzf#vim#files(expand('<cword>'), fzf#vim#with_preview(), <bang>0)
+     \ call fzf#vim#files(<q-args>, {'options':'--query '.expand('<cword>')})
 
    " Alias for fzf
    nnoremap <silent> <leader><space> :Files /src<CR>
    "nnoremap <silent> <Leader><space> :Files <C-R>=expand('%:h')<CR><CR>
-   nnoremap <silent> <leader>, :FileCWord
+   nnoremap <silent> <leader>, :FileCWord /src<CR>
    nnoremap <silent> <Leader>b :Buffers<cr>
    nnoremap <Leader>r :Rg 
 
