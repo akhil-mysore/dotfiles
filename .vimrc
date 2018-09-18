@@ -39,6 +39,8 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
       Plug 'majutsushi/tagbar'
       Plug 'xolox/vim-session'
       Plug 'xolox/vim-misc'
+      "Plug 'ngemily/vim-vp4' # Supposed to be good for perforce, try this
+      Plug 'mhinz/vim-signify'
       " Plug 'vim-scripts/ZoomWin'
       " Plug 'tpope/vim-dispatch'
       " Plug 'dhruvasagar/vim-zoom'
@@ -267,7 +269,7 @@ map g? :call <SID>inplace_search_start()<CR>?
    " FZF Global commands
    " This is the default extra key bindings
    let g:fzf_action = {
-     \ 'ctrl-q': 'wall | bdelete',
+     \ 'ctrl-q': 'split | wall | bdelete',
      \ 'ctrl-t': 'tab split',
      \ 'ctrl-x': 'split',
      \ 'ctrl-v': 'vsplit' }
@@ -382,10 +384,21 @@ map g? :call <SID>inplace_search_start()<CR>?
    nnoremap <F8> :TagbarToggle<CR>
 
 " Plugin vim-sessions
-   " Donot autosave as my saved session needs to be named.
-   " TODO: find out how to name autosaved sessions based
-   "       on environment variables
-   :let g:session_autosave = 'no' 
-   nnoremap :wq :SaveSession Sess$HOSTNAME.vim <bar> wq<CR>
-   nnoremap :q :SaveSession Sess$HOSTNAME.vim <bar> q<CR>
+   if empty($WP)
+      :let g:session_autosave = 'no'
+      :let g:session_autoload = 'no'
+   else
+      :let g:session_directory = '/src/vim-sessions/'
+      :let g:session_autosave = 'yes'
+      ":let g:session_autosave_to = "Session-$HOSTNAME.vim"
+      :let g:session_autosave_periodic = 1
+      :let g:session_autoload = 'yes'
+   endif
+
+" signify for perforce
+   let g:signify_vcs_list = [ 'perforce' ]
+   let g:signify_vcs_cmds = {
+      \ 'perforce': 'a p4 diff -du 0 %f' }
+   let g:signify_vcs_cmds_diffmode = {
+      \ 'perforce': 'a p4 diff %f' }
 
