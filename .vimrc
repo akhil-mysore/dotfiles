@@ -361,7 +361,7 @@ map g? :call <SID>inplace_search_start()<CR>?
    " Alias for fzf
    nnoremap <silent> <leader><space> :Files /src<CR>
    "nnoremap <silent> <Leader><space> :Files <C-R>=expand('%:h')<CR><CR>
-   nnoremap <silent> <leader><space>f :FileCWord
+   nnoremap <silent> <leader>, :FileCWord
    nnoremap <silent> <Leader>b :Buffers<cr>
    nnoremap <Leader>r :Rg 
 
