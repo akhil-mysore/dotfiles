@@ -97,7 +97,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 "" cscope
    "if filereadable( a:filename )
       setlocal nocscopeverbose " temporarily disable cscope warning
-      "cs add /src/pycscope.out /src
+      cs add /src/pycscope.out /src
       cs add /src/cscope.out /src
       cs reset " if it is already added, reset
       setlocal cscopeverbose
