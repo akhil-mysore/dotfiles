@@ -5,7 +5,7 @@ function! SourceFileFunction( filename )
 endfunction
 command! -complete=file -nargs=1 SourceFile call SourceFileFunction(<args>)
 
-set runtimepath+=/usr/share/vim/vimfiles
+"set runtimepath+=/usr/share/vim/vimfiles
 
 " Arista Include the system settings
 SourceFile "/etc/vimrc"
@@ -64,7 +64,7 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    nmap <Leader>s :call SwitchSourceHeader()<CR>
    nmap <Leader>ss :call VerticalOpenSourceHeader()<CR>
    " Checkout file from perforce
-   SourceFile "/home/akhil/dotfiles/.vimrc_arista_checkout"
+   " SourceFile "/home/akhil/dotfiles/.vimrc_arista_checkout"
 
 "" http://vimdoc.sourceforge.net/htmldoc/filetype.html
 "" detect file, loads file-plugin and process runtime indentation if present 
@@ -355,11 +355,18 @@ map g? :call <SID>inplace_search_start()<CR>?
    " Likewise, Files command with preview window
    command! -bang -nargs=? -complete=dir Files
      \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
+
+   command! -bang -nargs=? -complete=dir FilesRouting
+       \  call fzf#run(fzf#vim#with_preview(fzf#wrap({'source': 'find /src/Bgp* /src/ArBgp* /src/gated* -type f',
+       \ 'sink':  'edit' }), 'right:70%' ), <bang>0)
+
    command! -bang -nargs=? -complete=dir FileCWord
      \ call fzf#vim#files(<q-args>, {'options':'--query '.expand('<cword>')})
 
    " Alias for fzf
    nnoremap <silent> <leader><space> :Files /src<CR>
+   nnoremap <silent> <leader>z :FilesRouting<CR>
+
    "nnoremap <silent> <Leader><space> :Files <C-R>=expand('%:h')<CR><CR>
    nnoremap <silent> <leader>, :FileCWord /src<CR>
    nnoremap <silent> <Leader>b :Buffers<cr>
