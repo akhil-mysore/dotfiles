@@ -23,9 +23,11 @@ alias vipy='vim /tmp/temp.py'
 alias pt='pt --ignore tags '
 alias f='find . -iname '
 alias gitb='git branch'
-alias tmux="TERM=screen-256color tmux"
+#alias tmux="TERM=screen-256color tmux"
 alias gr="rg"
 alias gl='git log'
+alias dag="git log --color --graph --decorate --pretty=oneline --abbrev-commit"
+alias gis='git status'
 
 export TERM=xterm-256color # screen-256color
 # https://unix.stackexchange.com/questions/4859/
@@ -43,7 +45,8 @@ HISTSIZE=100000
 #!! https://unix.stackexchange.com/questions/18212
 HISTCONTROL=ignoredups:erasedups
 shopt -s histappend
-PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+# PROMPT_COMMAND="history -n; history -w; history -c; history -r; $PROMPT_COMMAND"
+PROMPT_COMMAND="history -a; $PROMPT_COMMAND"
 #
 # Set vi binding
 set -o vi
@@ -65,3 +68,9 @@ export FZF_DEFAULT_COMMAND='rg --files --no-ignore --hidden --follow --glob "!.g
 #export TMUX_TMPDIR="$HOME/tmp"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+
+dutvim() {
+   a dt scp /usr/lib/libgpm* dut:/usr/lib/
+   a dt scp /usr/lib/perl5/CORE/libperl* dut:/usr/lib/
+   a dt scp /usr/bin/vim dut:/usr/bin/
+}
