@@ -39,6 +39,10 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
       Plug 'majutsushi/tagbar'
       Plug 'xolox/vim-session'
       Plug 'xolox/vim-misc'
+      " Mark, multiple highlights
+      " Plug 'inkarkat/vim-mark'
+      " Plug 'inkarkat/vim-ingo-library'
+
       "Plug 'ngemily/vim-vp4' # Supposed to be good for perforce, try this
       Plug 'mhinz/vim-signify'
       " Plug 'vim-scripts/ZoomWin'
@@ -141,8 +145,8 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    "tnoremap <silent> <Leader>b :Buffers<cr>
    " vim tab
    nnoremap <Leader>t :tabedit 
-   " noremap <Leader><Left>  :tabmove -1<CR>
-   " noremap <Leader><Right> :tabmove +1<CR>
+   noremap <Leader>t<Left>  :tabmove -1<CR>
+   noremap <Leader>t<Right> :tabmove +1<CR>
    " set tabstop alias
    nnoremap <Leader>8 :set sw=8 <bar> set tabstop=8 <bar> set softtabstop=8 <bar> set ai <bar> set textwidth=110<CR>
    nnoremap <Leader>3 :set sw=3 <bar> set tabstop=3 <bar> set softtabstop=3 <bar> set ai <bar> set textwidth=85<CR>
@@ -161,11 +165,11 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    tnoremap <Leader><Down> <C-W><C-J>
    tnoremap <Leader><Left> <C-W><C-H>
    tnoremap <Leader><Right> <C-W><C-L>
-   tnoremap <Leader>k <C-W><C-K>
-   tnoremap <Leader>j <C-W><C-J>
-   tnoremap <Leader>h <C-W><C-H>
-   tnoremap <Leader>l <C-W><C-L>
-   tnoremap <Leader>p <C-W>".
+   "tnoremap <Leader>k <C-W><C-K>
+   "tnoremap <Leader>j <C-W><C-J>
+   "tnoremap <Leader>h <C-W><C-H>
+   "tnoremap <Leader>l <C-W><C-L>
+   "tnoremap <Leader>p <C-W>".
 
    " zoom
    nnoremap <Leader>Z <C-W>_<bar><C-W>|
@@ -187,10 +191,10 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    " Count number of matches
    nnoremap \n :%s///gn<CR>
 
-   nnoremap <Leader>f /\c<C-R>=expand("<cword>")<CR><CR>
-   nnoremap <Leader>fc /<C-R>=expand("<cword>")<CR><CR>
+   " nnoremap <Leader>f /\c<C-R>=expand("<cword>")<CR><CR>
+   " nnoremap <Leader>fc /<C-R>=expand("<cword>")<CR><CR>
    " Add word under cursor to search pattern
-   nnoremap <Leader>ff :let @/.='\\|\<'.expand("<cword>").'\>'<CR>
+   " nnoremap <Leader>ff :let @/.='\\|\<'.expand("<cword>").'\>'<CR>
 
 " let g:python_recommended_style = 0
 
@@ -201,7 +205,6 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
    "map <C-\> :vsp <CR>:exec("tag ".expand(""))<CR>
 
 "" General
-   call SeeSpaceTabs()
    set scrolloff=5 " Working line 'scrolloff' lines above or below
    set showmode " show in which vim mode are you in
    set showcmd " not working
@@ -229,19 +232,19 @@ SourceFile "/usr/share/vim/vimfiles/arista.vim"
 
    syntax enable
    set clipboard=unnamed
-
+   cd /src
 
 " autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window %")
 
-if exists("$TMUX")
-  if exists("$TMUX_WINDOW_NAME")
-    autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window $TMUX_WINDOW_NAME/"  . expand("%:t"))
-    autocmd VimLeave * call system("tmux rename-window $TMUX_WINDOW_NAME")
-  else
-    autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%:t"))
-    autocmd VimLeave * call system("tmux setw automatic-rename")
-  endif
-endif
+"if exists("$TMUX")
+"  if exists("$TMUX_WINDOW_NAME")
+"    autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window $TMUX_WINDOW_NAME/"  . expand("%:t"))
+"    autocmd VimLeave * call system("tmux rename-window $TMUX_WINDOW_NAME")
+"  else
+"    autocmd BufReadPost,FileReadPost,BufNewFile * call system("tmux rename-window " . expand("%:t"))
+"    autocmd VimLeave * call system("tmux setw automatic-rename")
+"  endif
+"endif
 
 set grepprg=rg\ --vimgrep
 
@@ -347,30 +350,46 @@ map g? :call <SID>inplace_search_start()<CR>?
 
    command! -bang -nargs=* Rg
    \ call fzf#vim#grep(
-   \   'rg --smart-case --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --glob "!taccscope*" --color=always '.<q-args>, 1,
+   \   'rg --smart-case --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pylint*" --glob "!Makefile.in*" --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --glob "!taccscope*" --color=always '.<q-args>, 1,
+   \   <bang>0 ? fzf#vim#with_preview('up:60%')
+   \           : fzf#vim#with_preview('right:50%'),
+   \   <bang>0)
+
+   command! -bang -nargs=* RgMyDirs
+   \ call fzf#vim#grep(
+   \   'rg --follow --smart-case --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pylint*" --glob "!Makefile.in*" --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --glob "!taccscope*" --color=always '.<q-args>, 1,
+   \   <bang>0 ? fzf#vim#with_preview('up:60%')
+   \           : fzf#vim#with_preview('right:50%'),
+   \   <bang>0)
+
+   command! -bang -nargs=* RgMyDirsCword
+   \ call fzf#vim#grep(
+   \   'rg --smart-case --vimgrep --glob "ArBgp*" --glob "Bgp*" --glob "!pylint*" --color=always '.expand('<cword>'), 1,
    \   <bang>0 ? fzf#vim#with_preview('up:60%')
    \           : fzf#vim#with_preview('right:50%'),
    \   <bang>0)
 
    " Likewise, Files command with preview window
-   command! -bang -nargs=? -complete=dir Files
-     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
-
-   command! -bang -nargs=? -complete=dir FilesRouting
+   command! -bang -nargs=? -complete=dir FilesRoutingWorking
        \  call fzf#run(fzf#vim#with_preview(fzf#wrap({'source': 'find /src/Bgp* /src/ArBgp* /src/gated* -type f',
        \ 'sink':  'edit' }), 'right:70%' ), <bang>0)
+
+   command! -bang -nargs=? -complete=dir Files
+     \ call fzf#vim#files(<q-args>, fzf#vim#with_preview(), <bang>0)
 
    command! -bang -nargs=? -complete=dir FileCWord
      \ call fzf#vim#files(<q-args>, {'options':'--query '.expand('<cword>')})
 
    " Alias for fzf
-   nnoremap <silent> <leader><space> :Files /src<CR>
-   nnoremap <silent> <leader>z :FilesRouting<CR>
+   nnoremap <silent> <leader><space> :Files /src/fzfsrc<CR>
+   nnoremap <silent> <leader>a :Files /src<CR>
 
    "nnoremap <silent> <Leader><space> :Files <C-R>=expand('%:h')<CR><CR>
    nnoremap <silent> <leader>, :FileCWord /src<CR>
    nnoremap <silent> <Leader>b :Buffers<cr>
-   nnoremap <Leader>r :Rg 
+   nnoremap <Leader>r :cd /src/fzfsrc <bar> :RgMyDirs 
+   nnoremap <Leader>R :cd /src <bar> :RgMyDirsCword<cr>
+   nnoremap <Leader>e :cd /src <bar> :Rg 
 
 " easy align
    " Start interactive EasyAlign in visual mode (e.g. vipga)
@@ -398,7 +417,7 @@ map g? :call <SID>inplace_search_start()<CR>?
       :let g:session_directory = '/src/vim-sessions/'
       :let g:session_autosave = 'yes'
       ":let g:session_autosave_to = "Session-$HOSTNAME.vim"
-      :let g:session_autosave_periodic = 1
+      :let g:session_autosave_periodic = 60
       :let g:session_autoload = 'yes'
    endif
 
@@ -409,3 +428,7 @@ map g? :call <SID>inplace_search_start()<CR>?
    let g:signify_vcs_cmds_diffmode = {
       \ 'perforce': 'a p4 diff %f' }
 
+" vim-mark
+   "nmap f <Plug>MarkSearchGroupNext
+"<Plug>MarkSearchUsedGroupNext
+   "nmap t <Plug>MarkSearchGroupPrev
