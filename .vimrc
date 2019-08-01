@@ -350,7 +350,7 @@ map g? :call <SID>inplace_search_start()<CR>?
 
    command! -bang -nargs=* Rg
    \ call fzf#vim#grep(
-   \   'rg --smart-case --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pylint*" --glob "!Makefile.in*" --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --glob "!taccscope*" --color=always '.<q-args>, 1,
+   \   'rg --smart-case --vimgrep --type-add "ar:*.{tac,tin,py,ar,am}" --type-add "tac:*.tac" --type-add "tin:*.tin" --no-ignore --glob "!pylint*" --glob "!Makefile.in*" --glob "!pycscope*" --glob "!newpycscope*" --glob "!cscope*" --glob "!taccscope*" --glob "!fzfsrc" --color=always '.<q-args>, 1,
    \   <bang>0 ? fzf#vim#with_preview('up:60%')
    \           : fzf#vim#with_preview('right:50%'),
    \   <bang>0)
