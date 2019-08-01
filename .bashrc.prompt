@@ -1,0 +1,21 @@
+# Colors
+export BLUE="\[\e[1;34m\]"
+export CYAN="\[\e[1;36m\]"
+export GREEN="\[\e[1;32m\]"
+export RED="\[\e[1;31m\]"
+
+return_color() {
+   rc=$?
+   if [ $rc -ne 0 ]; then
+      echo -e "${RED}{$rc}"
+   else
+      echo -e "${GREEN}{0}"
+   fi
+}
+
+# Reevaluate prompt after each command
+PROMPT_COMMAND=__prompt_command
+
+__prompt_command() {
+   PS1="${CYAN}[\h]${GREEN}[\t]${CYAN}[\w]`return_color`${CYAN}\$\[\e[0m\] \[$(tput sgr0)\]"
+}

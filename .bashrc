@@ -1,8 +1,13 @@
 # .bashrc
 
 # Source global definitions
+
+if [ -f /home/akhil/dotfiles/.bashrc.prompt ]; then
+   . //home/akhil/dotfiles/.bashrc.prompt
+fi
+
 if [ -f /etc/bashrc ]; then
-	. /etc/bashrc
+   . /etc/bashrc
 fi
 if [ -f /home/akhil/dotfiles/.bashrc.arista ]; then
    . /home/akhil/dotfiles/.bashrc.arista
